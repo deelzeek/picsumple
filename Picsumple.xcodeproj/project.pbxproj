@@ -8,21 +8,45 @@
 
 /* Begin PBXBuildFile section */
 		047E32452177B0A7001FB487 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E32442177B0A7001FB487 /* AppDelegate.swift */; };
-		047E32472177B0A7001FB487 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E32462177B0A7001FB487 /* ViewController.swift */; };
 		047E324A2177B0A7001FB487 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 047E32482177B0A7001FB487 /* Main.storyboard */; };
 		047E324C2177B0A8001FB487 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 047E324B2177B0A8001FB487 /* Assets.xcassets */; };
 		047E324F2177B0A9001FB487 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 047E324D2177B0A9001FB487 /* LaunchScreen.storyboard */; };
+		047E325D2177B3C6001FB487 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E325C2177B3C6001FB487 /* Photo.swift */; };
+		047E32602177BDC6001FB487 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E325F2177BDC6001FB487 /* Api.swift */; };
+		04BF5A8A2177E357003C13DD /* ListPicturesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A892177E357003C13DD /* ListPicturesPresenter.swift */; };
+		04BF5A8D2177E40B003C13DD /* ListPicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A8C2177E40B003C13DD /* ListPicturesViewController.swift */; };
+		04BF5A922177E4A9003C13DD /* PresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A912177E4A9003C13DD /* PresenterProtocol.swift */; };
+		04BF5A942177E4BF003C13DD /* MVPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A932177E4BF003C13DD /* MVPViewController.swift */; };
+		04BF5A962177E4CC003C13DD /* ViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A952177E4CC003C13DD /* ViewProtocol.swift */; };
+		04BF5A982177E526003C13DD /* UIViewController+Init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A972177E526003C13DD /* UIViewController+Init.swift */; };
+		04BF5A9A2177E53D003C13DD /* UIViewController+Storyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A992177E53D003C13DD /* UIViewController+Storyboard.swift */; };
+		04BF5A9C2177E558003C13DD /* UIViewController+Identifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A9B2177E558003C13DD /* UIViewController+Identifier.swift */; };
+		04BF5A9F2177E5A1003C13DD /* Storyboards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A9E2177E5A1003C13DD /* Storyboards.swift */; };
+		04BF5AA12177E5D8003C13DD /* PictureDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AA02177E5D8003C13DD /* PictureDetailsViewController.swift */; };
+		04BF5AA32177E5E2003C13DD /* PictureDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AA22177E5E2003C13DD /* PictureDetailsPresenter.swift */; };
 		75AD70225EDA0B0C0379C17E /* Pods_Picsumple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F261EED5B3EF745164563E63 /* Pods_Picsumple.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		047E32412177B0A7001FB487 /* Picsumple.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Picsumple.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		047E32442177B0A7001FB487 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		047E32462177B0A7001FB487 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		047E32492177B0A7001FB487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		047E324B2177B0A8001FB487 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		047E324E2177B0A9001FB487 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		047E32502177B0A9001FB487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		047E325C2177B3C6001FB487 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		047E325F2177BDC6001FB487 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		04BF5A892177E357003C13DD /* ListPicturesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPicturesPresenter.swift; sourceTree = "<group>"; };
+		04BF5A8C2177E40B003C13DD /* ListPicturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPicturesViewController.swift; sourceTree = "<group>"; };
+		04BF5A912177E4A9003C13DD /* PresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterProtocol.swift; sourceTree = "<group>"; };
+		04BF5A932177E4BF003C13DD /* MVPViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MVPViewController.swift; sourceTree = "<group>"; };
+		04BF5A952177E4CC003C13DD /* ViewProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewProtocol.swift; sourceTree = "<group>"; };
+		04BF5A972177E526003C13DD /* UIViewController+Init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Init.swift"; sourceTree = "<group>"; };
+		04BF5A992177E53D003C13DD /* UIViewController+Storyboard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Storyboard.swift"; sourceTree = "<group>"; };
+		04BF5A9B2177E558003C13DD /* UIViewController+Identifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Identifier.swift"; sourceTree = "<group>"; };
+		04BF5A9E2177E5A1003C13DD /* Storyboards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Storyboards.swift; sourceTree = "<group>"; };
+		04BF5AA02177E5D8003C13DD /* PictureDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDetailsViewController.swift; sourceTree = "<group>"; };
+		04BF5AA22177E5E2003C13DD /* PictureDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PictureDetailsPresenter.swift; sourceTree = "<group>"; };
 		68ECA160F78B1AB6FE95DB82 /* Pods-Picsumple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.release.xcconfig"; sourceTree = "<group>"; };
 		C2721B07C8E864FB21DA149B /* Pods-Picsumple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.debug.xcconfig"; sourceTree = "<group>"; };
 		F261EED5B3EF745164563E63 /* Pods_Picsumple.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Picsumple.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -61,14 +85,122 @@
 		047E32432177B0A7001FB487 /* Picsumple */ = {
 			isa = PBXGroup;
 			children = (
-				047E32442177B0A7001FB487 /* AppDelegate.swift */,
-				047E32462177B0A7001FB487 /* ViewController.swift */,
-				047E32482177B0A7001FB487 /* Main.storyboard */,
-				047E324B2177B0A8001FB487 /* Assets.xcassets */,
-				047E324D2177B0A9001FB487 /* LaunchScreen.storyboard */,
-				047E32502177B0A9001FB487 /* Info.plist */,
+				04BF5A9D2177E596003C13DD /* Enums */,
+				04BF5A8F2177E46C003C13DD /* Extensions */,
+				04BF5A8E2177E460003C13DD /* Protocols */,
+				047E32572177B309001FB487 /* Config */,
+				047E325A2177B336001FB487 /* Networking */,
+				047E325B2177B3BA001FB487 /* Model */,
+				047E32592177B328001FB487 /* ViewControllers */,
+				047E32582177B31D001FB487 /* Storyboards */,
+				047E32562177B2F1001FB487 /* Resources */,
 			);
 			path = Picsumple;
+			sourceTree = "<group>";
+		};
+		047E32562177B2F1001FB487 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				047E324B2177B0A8001FB487 /* Assets.xcassets */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		047E32572177B309001FB487 /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				047E32442177B0A7001FB487 /* AppDelegate.swift */,
+				047E32502177B0A9001FB487 /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		047E32582177B31D001FB487 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				047E32482177B0A7001FB487 /* Main.storyboard */,
+				047E324D2177B0A9001FB487 /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		047E32592177B328001FB487 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A862177E332003C13DD /* ListPicturesVC */,
+				04BF5A8B2177E35C003C13DD /* PictureDetailsVC */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		047E325A2177B336001FB487 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				047E325F2177BDC6001FB487 /* Api.swift */,
+			);
+			path = Networking;
+			sourceTree = "<group>";
+		};
+		047E325B2177B3BA001FB487 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				047E325C2177B3C6001FB487 /* Photo.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		04BF5A862177E332003C13DD /* ListPicturesVC */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A8C2177E40B003C13DD /* ListPicturesViewController.swift */,
+				04BF5A892177E357003C13DD /* ListPicturesPresenter.swift */,
+			);
+			path = ListPicturesVC;
+			sourceTree = "<group>";
+		};
+		04BF5A8B2177E35C003C13DD /* PictureDetailsVC */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5AA02177E5D8003C13DD /* PictureDetailsViewController.swift */,
+				04BF5AA22177E5E2003C13DD /* PictureDetailsPresenter.swift */,
+			);
+			path = PictureDetailsVC;
+			sourceTree = "<group>";
+		};
+		04BF5A8E2177E460003C13DD /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A902177E49C003C13DD /* MVP */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		04BF5A8F2177E46C003C13DD /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A972177E526003C13DD /* UIViewController+Init.swift */,
+				04BF5A992177E53D003C13DD /* UIViewController+Storyboard.swift */,
+				04BF5A9B2177E558003C13DD /* UIViewController+Identifier.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		04BF5A902177E49C003C13DD /* MVP */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A912177E4A9003C13DD /* PresenterProtocol.swift */,
+				04BF5A932177E4BF003C13DD /* MVPViewController.swift */,
+				04BF5A952177E4CC003C13DD /* ViewProtocol.swift */,
+			);
+			path = MVP;
+			sourceTree = "<group>";
+		};
+		04BF5A9D2177E596003C13DD /* Enums */ = {
+			isa = PBXGroup;
+			children = (
+				04BF5A9E2177E5A1003C13DD /* Storyboards.swift */,
+			);
+			path = Enums;
 			sourceTree = "<group>";
 		};
 		32406DD9CBF28BB8084B14CE /* Pods */ = {
@@ -198,14 +330,12 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
-				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -220,8 +350,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				047E32472177B0A7001FB487 /* ViewController.swift in Sources */,
+				04BF5A9F2177E5A1003C13DD /* Storyboards.swift in Sources */,
+				04BF5A8A2177E357003C13DD /* ListPicturesPresenter.swift in Sources */,
+				04BF5A9C2177E558003C13DD /* UIViewController+Identifier.swift in Sources */,
+				04BF5A942177E4BF003C13DD /* MVPViewController.swift in Sources */,
+				04BF5A962177E4CC003C13DD /* ViewProtocol.swift in Sources */,
+				04BF5A9A2177E53D003C13DD /* UIViewController+Storyboard.swift in Sources */,
+				047E32602177BDC6001FB487 /* Api.swift in Sources */,
+				04BF5A922177E4A9003C13DD /* PresenterProtocol.swift in Sources */,
+				04BF5AA32177E5E2003C13DD /* PictureDetailsPresenter.swift in Sources */,
+				04BF5A982177E526003C13DD /* UIViewController+Init.swift in Sources */,
+				04BF5AA12177E5D8003C13DD /* PictureDetailsViewController.swift in Sources */,
+				047E325D2177B3C6001FB487 /* Photo.swift in Sources */,
 				047E32452177B0A7001FB487 /* AppDelegate.swift in Sources */,
+				04BF5A8D2177E40B003C13DD /* ListPicturesViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -368,15 +510,18 @@
 			baseConfigurationReference = C2721B07C8E864FB21DA149B /* Pods-Picsumple.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Y7L6J7Z75;
-				INFOPLIST_FILE = Picsumple/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Picsumple/Config/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.picsumpl.Picsumple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -387,15 +532,18 @@
 			baseConfigurationReference = 68ECA160F78B1AB6FE95DB82 /* Pods-Picsumple.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 4Y7L6J7Z75;
-				INFOPLIST_FILE = Picsumple/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/Picsumple/Config/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.picsumpl.Picsumple;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

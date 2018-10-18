@@ -18,6 +18,10 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     private var initPoint : CGPoint?
     private (set) var isBarVisible: Bool = true
     
+    var isOrientationLandscape: Bool {
+        return UIDevice.current.orientation.isLandscape
+    }
+    
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHangler(_:)))
         recognizer.delegate = self
@@ -148,8 +152,14 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         if gestureRecognizer.state == .ended {
             let transformedSize = gestureRecognizer.view?.layer.frame.size
             
-            // If transformed size has smaller width, then return it to the original width
-            if transformedSize?.width ?? 0 < self.view.view.bounds.width {
+            // If transformed size has smaller width/height, then return it to the original width/height
+            let shouldReturnToOriginal: Bool = {
+                let heightIsLess = (transformedSize?.height ?? 0 < self.view.view.bounds.height)
+                let widthIsLess = (transformedSize?.width ?? 0 < self.view.view.bounds.width)
+                return self.isOrientationLandscape ? heightIsLess : widthIsLess
+            }()
+            
+            if shouldReturnToOriginal {
                 UIView.animate(withDuration: 0.2) {
                     gestureRecognizer.view?.transform = CGAffineTransform.identity
                 }

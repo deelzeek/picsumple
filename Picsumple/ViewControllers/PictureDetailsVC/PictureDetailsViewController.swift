@@ -54,6 +54,17 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         return true
     }
     
+    /// Adjust orientation changes
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        imageView?.snp.remakeConstraints({ (make) in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            let _ = self.presenter.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
+        })
+    }
+    
     // MARK: - UI setup
     
     private func setupViews() {
@@ -73,7 +84,7 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         imageView.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.width.equalToSuperview()
+            let _ = self.presenter.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
         }
         self.imageView = imageView
         

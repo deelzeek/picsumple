@@ -14,6 +14,7 @@ protocol PictureDetailsView: ViewProtocol {
     var authorLabel: UILabel? { get set }
     var imageView: UIImageView? { get set }
     var photo: PhotoMasterCell? { get set }
+    var backgroundView: UIView? { get set }
 }
 
 final class PictureDetailsViewController: UIViewController, MVPViewController {
@@ -24,6 +25,7 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
     weak var footerView: UIView?
     weak var authorLabel: UILabel?
     weak var imageView: UIImageView?
+    weak var backgroundView: UIView?
     
     /// Input
     var photo: PhotoMasterCell?
@@ -36,11 +38,24 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         self.setupViews()
     }
     
+    /// Hide status bar for full screen
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     // MARK: - UI setup
     
     private func setupViews() {
         self.title = "Photo \(self.photo?.id ?? 1)"
-        self.view.backgroundColor = UIColor.white
+        self.view.backgroundColor = .clear
+        
+        let backgroundView = UIView()
+        self.view.addSubview(backgroundView)
+        backgroundView.backgroundColor = .black
+        backgroundView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        self.backgroundView = backgroundView
         
         let imageView = UIImageView()
         self.view.addSubview(imageView)

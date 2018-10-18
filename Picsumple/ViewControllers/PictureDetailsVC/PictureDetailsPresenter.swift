@@ -90,15 +90,45 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     private func panGestureDidChange(point: CGPoint, view: UIView) {
         /// Move item around
         view.center = CGPoint(x: initPoint!.x + point.x, y: initPoint!.y + point.y)
+        
+        // Get distance change from initial center
+        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view)
+        
+        // If over 100, then for every +1 point reduce alpha for background
+        if 100.0...200.0 ~= Double(verticalDistance) {
+            let alphaValue: CGFloat = 1.0 - (verticalDistance.truncatingRemainder(dividingBy: 100.0) / 100.0)
+            self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alphaValue)
+        }
     }
     
     private func panGestureDidEnd(_ view: UIView) {
+        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view)
+        
+        // If alpha has reached 0, and user let it go on that moment -> dismiss
+        if verticalDistance >= 200 {
+            self.view.imageView?.isHidden = true
+            self.view.vc.dismiss(animated: false, completion: nil)
+            return
+        }
+        
+        // Return to original centre
+        view.center = self.initPoint!
+        self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
+        
         /// Animate picture back to init position
         UIView.animate(withDuration: 0.2, animations: {
-            view.center = self.initPoint!
             self.view.view.layoutIfNeeded()
         })
         
+    }
+    
+    private func getVerticalDistanceFromCenter(for view: UIView) -> CGFloat {
+        let y = self.view.view.center.y
+        if view.center.y > y {
+            return view.center.y - y
+        } else {
+            return y - view.center.y
+        }
     }
     
     @objc private func pinchGestureHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
@@ -107,6 +137,15 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
             gestureRecognizer.view?.transform = (gestureRecognizer.view?.transform.scaledBy(x: gestureRecognizer.scale, y: gestureRecognizer.scale))!
             gestureRecognizer.scale = 1.0
+            
+            return
+        }
+        
+        if gestureRecognizer.state == .ended {
+            let transformedSize = gestureRecognizer.view?.layer.frame.size
+            if transformedSize?.width ?? 0 < self.view.view.bounds.width {
+                gestureRecognizer.view?.transform = CGAffineTransform.identity
+            }
         }
     }
     

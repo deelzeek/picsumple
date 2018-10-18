@@ -68,7 +68,10 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
         
         let vc = PictureDetailsViewController()
         vc.photo = self.photos[indexPath.row] as PhotoMasterCell
-        self.view.vc.navigationController?.pushViewController(vc, animated: true)
+        vc.modalPresentationStyle = .overCurrentContext
+        vc.modalTransitionStyle = .coverVertical
+        self.view.vc.present(vc, animated: true, completion: nil)
+        //self.view.vc.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

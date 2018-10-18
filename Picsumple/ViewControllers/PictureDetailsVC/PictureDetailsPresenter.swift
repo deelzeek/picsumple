@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     typealias V = PictureDetailsView
@@ -16,7 +17,10 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     unowned var view: V
     
     private var initPoint : CGPoint?
+    private (set) var currentPosition: Int = 1
     private (set) var isBarVisible: Bool = true
+    private var lastContentOffset: CGPoint?
+    private var addedImageViews = [UIImageView]()
     
     var isOrientationLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
@@ -48,24 +52,62 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     }
     
     func fillValues() {
-        guard let photo = self.view.photo else { return }
+        guard let startingNumber = self.view.numberInArray else { return }
+        let photo = self.view.photos[startingNumber]
         
         self.view.authorLabel?.text = photo.author
         self.view.imageView?.kf.setImage(with: photo.originalImageAddress,
-                                    options: [.transition(.fade(0.2))])
+                                         options: [.transition(.fade(0.2))])
         
-        self.configInteraction()
+        // Add recognizers
+        self.configInteraction(for: self.view.imageView)
+        
+        if startingNumber > 0 {
+            self.addImageView(at: self.currentPosition + 1)
+        }
+    }
+    
+    /// Create next image and prepare it for usage, before reaching it
+    func addImageView(at position: Int) {
+        let imageView = UIImageView()
+        self.view.scrollView?.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFit
+        
+        // Adjust new view's frame center
+        // Formula: x = y * (n+(n-1))
+        // n - number of image in current sequence
+        // x - image's x position by frame
+        // y - default view.center.x
+        let xPos = self.view.view.center.x * CGFloat(position + (position - 1))
+        imageView.snp.makeConstraints { (make) in
+            make.centerX.equalTo(xPos)
+            make.centerY.equalToSuperview()
+            let _ = self.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
+        }
+        
+        // Set image to download
+        let resource = self.view.photos[self.view.numberInArray + position].originalImageAddress
+        imageView.kf.setImage(with: resource,
+                              options: [.transition(.fade(0.2))])
+        
+        // Add to array
+        self.addedImageViews.append(imageView)
+        
+        // Update scrollView frame
+        self.view.scrollView?.contentSize = CGSize(width: self.view.view.frame.width * CGFloat(position),
+                                                   height: self.view.view.frame.height)
+        
+        // Add recognizers
+        self.configInteraction(for: imageView)
     }
     
     // MARK: - Interactions
     
-    private func configInteraction() {
-        guard let imageView = self.view.imageView else { return }
-        
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(panGestureRecognizer)
-        imageView.addGestureRecognizer(pinchGestureRecognizer)
-        imageView.addGestureRecognizer(tapGestureRecognizer)
+    private func configInteraction(for imageView: UIImageView?) {
+        imageView?.isUserInteractionEnabled = true
+        imageView?.addGestureRecognizer(panGestureRecognizer)
+        imageView?.addGestureRecognizer(pinchGestureRecognizer)
+        imageView?.addGestureRecognizer(tapGestureRecognizer)
     }
     
     // MARK: - Pan Gesture regonizer handler
@@ -130,11 +172,13 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     
     private func getVerticalDistanceFromCenter(for view: UIView) -> CGFloat {
         let y = self.view.view.center.y
-        if view.center.y > y {
-            return view.center.y - y
-        } else {
-            return y - view.center.y
+        let viewY = view.center.y
+        
+        if viewY == 0 {
+            return 0
         }
+        
+        return (viewY >= y) ? (viewY - y) : (y - viewY)
     }
     
     // MARK: - Pinch Gesture regonizer handler
@@ -183,11 +227,66 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
 // MARK: - UIGestureRecognizerDelegate method
 
 extension PictureDetailsPresenter: UIGestureRecognizerDelegate {
+    
+    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
+        if #available(iOS 11.0, *) {
+            debugPrint("view: \(gestureRecognizer.view), rec: \(gestureRecognizer.name)")
+        } else {
+            // Fallback on earlier versions
+        }
+        
+        return true
+    }
+    
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
         if (gestureRecognizer is UIPanGestureRecognizer || gestureRecognizer is UIPinchGestureRecognizer) {
             return true
+        } else if (gestureRecognizer is UISwipeGestureRecognizer) {
+            return false
+        } else if (gestureRecognizer.view === self.view.scrollView) {
+            return false
         } else {
             return false
         }
+    }
+    
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        return (gestureRecognizer.view !== self.view.scrollView)
+    }
+    
+}
+
+// MARK: - UIScrollViewDelegate methods
+
+extension PictureDetailsPresenter: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        //debugPrint("scrollViewDidScroll")
+    }
+    
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        lastContentOffset = scrollView.contentOffset
+        //debugPrint("scrollViewWillBeginDragging")
+    }
+    
+    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+        //debugPrint("scrollViewWillBeginDecelerating")
+        guard let last = lastContentOffset else { return }
+        
+        // did swipe right
+        if last.x < scrollView.contentOffset.x {
+            if self.currentPosition != self.view.photos.count {
+                currentPosition += 1
+                if self.currentPosition >= (self.addedImageViews.count + 1) {
+                    self.addImageView(at: self.currentPosition + 1)
+                }
+            }
+        }   // did swipe left
+        else if last.x > scrollView.contentOffset.x {
+            if self.currentPosition != 1 {
+                self.currentPosition -= 1
+            }
+        }
+        
     }
 }

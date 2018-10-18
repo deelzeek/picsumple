@@ -13,8 +13,11 @@ protocol PictureDetailsView: ViewProtocol {
     var footerView: UIView? { get set }
     var authorLabel: UILabel? { get set }
     var imageView: UIImageView? { get set }
-    var photo: PhotoMasterCell! { get set }
     var backgroundView: UIView? { get set }
+    var scrollView: UIScrollView? { get set }
+    
+    var photos: [PhotoMasterCell]! { get set }
+    var numberInArray: Int! { get }
 }
 
 final class PictureDetailsViewController: UIViewController, MVPViewController {
@@ -26,14 +29,17 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
     weak var authorLabel: UILabel?
     weak var imageView: UIImageView?
     weak var backgroundView: UIView?
+    weak var scrollView: UIScrollView?
     
     /// Input
-    var photo: PhotoMasterCell!
+    var photos: [PhotoMasterCell]!
+    var numberInArray: Int!
     
     // MARK: Inits
     
-    init(photo: PhotoMasterCell) {
-        self.photo = photo
+    init(photos: [PhotoMasterCell], numberInArray: Int) {
+        self.photos = photos
+        self.numberInArray = numberInArray
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -78,8 +84,23 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         }
         self.backgroundView = backgroundView
         
+        let scrollView = UIScrollView()
+        self.view.addSubview(scrollView)
+        scrollView.isPagingEnabled = true
+//        for recognizer in scrollView.gestureRecognizers ?? [] {
+//            if recognizer is UIPanGestureRecognizer {
+//                scrollView.removeGestureRecognizer(recognizer)
+//            }
+//        }
+        scrollView.snp.makeConstraints { (make) in
+            make.edges.equalToSuperview()
+        }
+        
+        self.scrollView = scrollView
+        self.scrollView?.delegate = presenter
+        
         let imageView = UIImageView()
-        self.view.addSubview(imageView)
+        self.scrollView?.addSubview(imageView)
         imageView.contentMode = .scaleAspectFit
         imageView.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()

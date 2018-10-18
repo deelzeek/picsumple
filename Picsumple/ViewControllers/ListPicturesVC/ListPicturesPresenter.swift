@@ -66,8 +66,9 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
         
-        let photo = self.photos[indexPath.row] as PhotoMasterCell
-        let vc = PictureDetailsViewController(photo: photo)
+        let rowNum = indexPath.row
+        let photo = self.photos[rowNum] as PhotoMasterCell
+        let vc = PictureDetailsViewController(photos: self.photos, numberInArray: rowNum)
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         self.view.vc.present(vc, animated: true, completion: nil)

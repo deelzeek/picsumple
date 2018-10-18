@@ -8,5 +8,6 @@ target 'Picsumple' do
   # Pods for Picsumple
   pod 'SnapKit', '~> 4.0.0'
   pod 'Alamofire', '~> 4.7'
+  pod 'Kingfisher', '~> 4.0'
 
 end

@@ -58,12 +58,17 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "picCell") as! PictureTableViewCell
-        cell.authorName.text = self.photos[indexPath.row].author
+        let photo = self.photos[indexPath.row] as PhotoMasterCell
+        cell.setPhoto(photo)
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
         
+        let vc = PictureDetailsViewController()
+        vc.photo = self.photos[indexPath.row] as PhotoMasterCell
+        self.view.vc.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

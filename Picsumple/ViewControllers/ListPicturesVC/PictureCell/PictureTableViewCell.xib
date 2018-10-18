@@ -27,7 +27,7 @@
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="vuf-qA-cPE">
                         <rect key="frame" x="16" y="14.5" width="50" height="50"/>
-                        <color key="backgroundColor" red="0.36470588240000001" green="0.36458903549999999" blue="0.36458903549999999" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="0.87399839739999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="50" id="KdB-M7-Hwn"/>
                             <constraint firstAttribute="width" secondItem="vuf-qA-cPE" secondAttribute="height" multiplier="1:1" id="xps-Gf-OKZ"/>

@@ -64,7 +64,7 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         imageView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    // MARK: - Gesture regonizer handler
+    // MARK: - Pan Gesture regonizer handler
     
     @objc private func panGestureHangler(_ sender: UIPanGestureRecognizer) {
         guard let picture = sender.view else { return }
@@ -92,7 +92,7 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         view.center = CGPoint(x: initPoint!.x + point.x, y: initPoint!.y + point.y)
         
         // Get distance change from initial center
-        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view)
+        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view) + 50.0
         
         // If over 100, then for every +1 point reduce alpha for background
         if 100.0...200.0 ~= Double(verticalDistance) {
@@ -106,17 +106,19 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         
         // If alpha has reached 0, and user let it go on that moment -> dismiss
         if verticalDistance >= 200 {
-            self.view.imageView?.isHidden = true
-            self.view.vc.dismiss(animated: false, completion: nil)
+            UIView.animate(withDuration: 0.2, animations: {
+                self.view.view.alpha = 0
+            }, completion: { _ in
+                self.view.vc.dismiss(animated: false, completion: nil)
+            })
             return
         }
         
-        // Return to original centre
-        view.center = self.initPoint!
-        self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-        
         /// Animate picture back to init position
         UIView.animate(withDuration: 0.2, animations: {
+            // Return to original centre
+            view.center = self.initPoint!
+            self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
             self.view.view.layoutIfNeeded()
         })
         
@@ -131,6 +133,8 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         }
     }
     
+    // MARK: - Pinch Gesture regonizer handler
+    
     @objc private func pinchGestureHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
         guard gestureRecognizer.view != nil else { return }
         
@@ -143,11 +147,17 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         
         if gestureRecognizer.state == .ended {
             let transformedSize = gestureRecognizer.view?.layer.frame.size
+            
+            // If transformed size has smaller width, then return it to the original width
             if transformedSize?.width ?? 0 < self.view.view.bounds.width {
-                gestureRecognizer.view?.transform = CGAffineTransform.identity
+                UIView.animate(withDuration: 0.2) {
+                    gestureRecognizer.view?.transform = CGAffineTransform.identity
+                }
             }
         }
     }
+    
+    // MARK: - Tap Gesture regonizer handler
     
     @objc private func tapGestureHandler(_ sender: UITapGestureRecognizer) {
         UIView.animate(withDuration: 0.5, animations: {
@@ -159,6 +169,8 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         })
     }
 }
+
+// MARK: - UIGestureRecognizerDelegate method
 
 extension PictureDetailsPresenter: UIGestureRecognizerDelegate {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {

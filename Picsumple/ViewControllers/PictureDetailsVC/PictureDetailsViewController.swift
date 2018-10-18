@@ -13,7 +13,7 @@ protocol PictureDetailsView: ViewProtocol {
     var footerView: UIView? { get set }
     var authorLabel: UILabel? { get set }
     var imageView: UIImageView? { get set }
-    var photo: PhotoMasterCell? { get set }
+    var photo: PhotoMasterCell! { get set }
     var backgroundView: UIView? { get set }
 }
 
@@ -28,7 +28,18 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
     weak var backgroundView: UIView?
     
     /// Input
-    var photo: PhotoMasterCell?
+    var photo: PhotoMasterCell!
+    
+    // MARK: Inits
+    
+    init(photo: PhotoMasterCell) {
+        self.photo = photo
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError()
+    }
     
     // MARK: - Lifecycle
     
@@ -46,7 +57,6 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
     // MARK: - UI setup
     
     private func setupViews() {
-        self.title = "Photo \(self.photo?.id ?? 1)"
         self.view.backgroundColor = .clear
         
         let backgroundView = UIView()

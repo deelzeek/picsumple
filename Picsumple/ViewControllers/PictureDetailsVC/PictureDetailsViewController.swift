@@ -10,7 +10,10 @@ import UIKit
 import SnapKit
 
 protocol PictureDetailsView: ViewProtocol {
-    
+    var footerView: UIView? { get set }
+    var authorLabel: UILabel? { get set }
+    var imageView: UIImageView? { get set }
+    var photo: PhotoMasterCell? { get set }
 }
 
 final class PictureDetailsViewController: UIViewController, MVPViewController {
@@ -33,21 +36,21 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         self.setupViews()
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        UIView.animate(withDuration: 0.5, animations: {
-            self.navigationController?.navigationBar.alpha = 0
-            self.footerView?.alpha = 0
-        }, completion: { _ in
-            self.navigationController?.navigationBar.alpha = 1
-            self.footerView?.alpha = 1
-        })
-        
-    }
+    // MARK: - UI setup
     
     private func setupViews() {
-        self.title = "Photo"
+        self.title = "Photo \(self.photo?.id ?? 1)"
         self.view.backgroundColor = UIColor.white
+        
+        let imageView = UIImageView()
+        self.view.addSubview(imageView)
+        imageView.contentMode = .scaleAspectFit
+        imageView.snp.makeConstraints { (make) in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        self.imageView = imageView
         
         let footerView = UIView()
         self.view.addSubview(footerView)
@@ -68,32 +71,14 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
             make.centerY.equalToSuperview()
         }
         
-        authorLabel.text = "Author"
         self.authorLabel = authorLabel
         
-        let imageView = UIImageView()
-        self.view.addSubview(imageView)
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor.lightGray
-        imageView.snp.makeConstraints { (make) in
-            make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview()
-            make.height.equalTo(300.0)
-            make.width.equalToSuperview()
-        }
-        self.imageView = imageView
-        
-        guard let url = photo?.originalImageAddress else { return }
-        self.imageView?.kf.setImage(with: url,
-                                    options: [.transition(.fade(0.2))],
-            progressBlock: {
-                receivedSize, totalSize in
-                let percentage = (Float(receivedSize) / Float(totalSize)) * 100.0
-                print("downloading progress: \(percentage)%")
-        },
-                                    completionHandler: nil)
+        // Fill values
+        self.presenter.fillValues()
     }
     
+    
+    // MARK: - User actions
     
 }
 

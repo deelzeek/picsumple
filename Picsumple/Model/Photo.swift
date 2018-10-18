@@ -22,7 +22,7 @@ struct Photo: Decodable, PhotoMasterCell {
     }
     
     var originalImageAddress: URL {
-        return URL(string: "https://picsum.photos/500/500?image=\(id)")!
+        return URL(string: "https://picsum.photos/1000/1000?image=\(id)")!
     }
     
     enum CodingKeys: String, CodingKey {

@@ -42,6 +42,9 @@ final class ListPicturesViewController: UIViewController, MVPViewController {
         tableView.delegate = presenter
         tableView.dataSource = presenter
         self.tableView = tableView
+        
+        // Start a request
+        self.presenter.getPhotos()
     }
     
 }

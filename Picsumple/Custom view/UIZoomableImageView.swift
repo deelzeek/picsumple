@@ -25,11 +25,10 @@ class UIZoomableImageView: UIImageView {
     // MARK: - Properties
     
     private var initPoint : CGPoint?
+    private var pinchZoomIsProcessing: Bool = false
     private var isOrientationLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
     }
-    
-    private var pinchZoomIsProcessing: Bool = false
     
     /// input
     weak var delegate: UIZoomableImageViewDelegate?
@@ -38,7 +37,6 @@ class UIZoomableImageView: UIImageView {
     
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHangler(_:)))
-        //recognizer.delaysTouchesBegan = true
         recognizer.delegate = self
         return recognizer
     }()
@@ -160,11 +158,9 @@ class UIZoomableImageView: UIImageView {
             // Update zoom value
             self.pinchZoomIsProcessing = false
             
-            //if shouldReturnToOriginal {
-                UIView.animate(withDuration: 0.2) {
-                    gestureRecognizer.view?.transform = CGAffineTransform.identity
-                }
-            //}
+            UIView.animate(withDuration: 0.2) {
+                gestureRecognizer.view?.transform = CGAffineTransform.identity
+            }
         }
     }
 
@@ -182,8 +178,6 @@ extension UIZoomableImageView: UIGestureRecognizerDelegate {
     }
     
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        debugPrint(gestureRecognizer)
-        
         if gestureRecognizer === self.panGestureRecognizer {
             if self.pinchZoomIsProcessing {
                 return true

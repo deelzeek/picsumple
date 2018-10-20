@@ -16,7 +16,18 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
     unowned var view: V
     private (set) var photos = [Photo]() {
         didSet {
-            self.view.tableView?.reloadData()
+            guard let tableView = self.view.tableView else { return }
+            tableView.reloadData()
+            
+            for (i, cell) in tableView.visibleCells.enumerated() {
+                let cell: UITableViewCell = cell as UITableViewCell
+                let tableHeight: CGFloat = tableView.bounds.size.height
+                cell.transform = CGAffineTransform(translationX: 0, y: tableHeight)
+                
+                UIView.animate(withDuration: 1.5, delay: 0.05 * Double(i), usingSpringWithDamping: 0.8, initialSpringVelocity: 0, animations: {
+                    cell.transform = CGAffineTransform(translationX: 0, y: 0)
+                }, completion: nil)
+            }
         }
     }
     
@@ -25,16 +36,14 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
     init(_ view: V) {
         self.view = view
         super.init()
-        
-        self.getPhotos()
     }
     
-    private func getPhotos() {
+    func getPhotos() {
         Api.shared.getListOfPhotos { (result) in
             switch result {
             case .success(let photos as [Photo]):
                 self.photos = photos
-            case .success(let _):
+            case .success(_):
                 break
             case .error(let error):
                 break
@@ -67,12 +76,10 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let rowNum = indexPath.row
-        let photo = self.photos[rowNum] as PhotoMasterCell
         let vc = PictureDetailsViewController(photos: self.photos, numberInArray: rowNum)
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         self.view.vc.present(vc, animated: true, completion: nil)
-        //self.view.vc.navigationController?.pushViewController(vc, animated: true)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {

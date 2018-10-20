@@ -17,9 +17,13 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     unowned var view: V
     
     private var initPoint : CGPoint?
-    private (set) var currentPosition: Int = 1
     private var lastContentOffset: CGPoint?
     private var addedImageViews = [UIZoomableImageView]()
+    private (set) var currentPosition: Int = 1 {
+        didSet {
+            self.currentPositionDidChange()
+        }
+    }
     
     var isOrientationLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
@@ -40,6 +44,7 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         self.view.imageView?.kf.setImage(with: photo.originalImageAddress,
                                          options: [.transition(.fade(0.2))])
         
+        /// Add one more imageview by default
         if startingNumber > 0 {
             self.addImageView(at: self.currentPosition + 1)
         }
@@ -77,6 +82,48 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
                                                    height: self.view.view.frame.height)
     }
     
+    func orientationDidChange() {
+        
+        /// Very first
+        self.view.imageView?.snp.remakeConstraints({ (make) in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
+            let _ = self.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
+        })
+        
+        /// Dynamically added ones
+        
+        for (pos, image) in addedImageViews.enumerated() {
+            let correction = pos + 2
+            let xPos = self.view.view.center.y * CGFloat(correction + (correction - 1))
+            image.snp.remakeConstraints({ (make) in
+                make.centerX.equalTo(xPos)
+                make.centerY.equalToSuperview()
+                let _ = self.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
+            })
+        }
+        
+        // Update scrollView frame
+        self.view.scrollView?.contentSize = CGSize(width: self.view.view.frame.height * CGFloat(addedImageViews.count + 1),
+                                                   height: self.view.view.frame.width)
+        
+        // Update the scroll view scroll position to the appropriate page.
+        let minX = self.view.view.frame.minX
+        let minY = self.view.view.frame.height * CGFloat(currentPosition - 1)
+        let offsetPoint = CGPoint(x: minY, y: minX)
+        self.view.scrollView?.setContentOffset(offsetPoint, animated: true)
+    }
+    
+    /// Update value on the screen according to what is being shown e.g. author name
+    private func currentPositionDidChange() {
+        if !self.view.photos.indices.contains(self.view.numberInArray + currentPosition - 1) {
+            return
+        }
+        
+        let authorName = self.view.photos[self.view.numberInArray + currentPosition - 1].author
+        self.view.authorLabel?.text = authorName
+    }
+    
 }
 
 // MARK: - UIScrollViewDelegate methods
@@ -107,6 +154,8 @@ extension PictureDetailsPresenter: UIScrollViewDelegate {
         
     }
 }
+
+// MARK: - UIZoomableImageViewDelegate methods
 
 extension PictureDetailsPresenter: UIZoomableImageViewDelegate {
     var viewWidth: CGFloat? {

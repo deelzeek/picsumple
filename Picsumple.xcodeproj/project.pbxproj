@@ -25,6 +25,7 @@
 		04BF5AAC2177EDE3003C13DD /* ApiMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AAB2177EDE3003C13DD /* ApiMethods.swift */; };
 		04BF5AAE2177EE38003C13DD /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AAD2177EE38003C13DD /* Endpoints.swift */; };
 		04C95DA92178B33B00EDE627 /* PhotoMasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C95DA82178B33B00EDE627 /* PhotoMasterCell.swift */; };
+		04C95DAC217953AF00EDE627 /* UIZoomableImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C95DAB217953AF00EDE627 /* UIZoomableImageView.swift */; };
 		75AD70225EDA0B0C0379C17E /* Pods_Picsumple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F261EED5B3EF745164563E63 /* Pods_Picsumple.framework */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +50,7 @@
 		04BF5AAB2177EDE3003C13DD /* ApiMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMethods.swift; sourceTree = "<group>"; };
 		04BF5AAD2177EE38003C13DD /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		04C95DA82178B33B00EDE627 /* PhotoMasterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMasterCell.swift; sourceTree = "<group>"; };
+		04C95DAB217953AF00EDE627 /* UIZoomableImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIZoomableImageView.swift; sourceTree = "<group>"; };
 		68ECA160F78B1AB6FE95DB82 /* Pods-Picsumple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.release.xcconfig"; sourceTree = "<group>"; };
 		C2721B07C8E864FB21DA149B /* Pods-Picsumple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.debug.xcconfig"; sourceTree = "<group>"; };
 		F261EED5B3EF745164563E63 /* Pods_Picsumple.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Picsumple.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +89,7 @@
 		047E32432177B0A7001FB487 /* Picsumple */ = {
 			isa = PBXGroup;
 			children = (
+				04C95DAA2179539400EDE627 /* Custom view */,
 				047E32572177B309001FB487 /* Config */,
 				04BF5A8E2177E460003C13DD /* Protocols */,
 				047E325A2177B336001FB487 /* Networking */,
@@ -196,6 +199,14 @@
 				04BF5AA62177EB9E003C13DD /* PictureTableViewCell.xib */,
 			);
 			path = PictureCell;
+			sourceTree = "<group>";
+		};
+		04C95DAA2179539400EDE627 /* Custom view */ = {
+			isa = PBXGroup;
+			children = (
+				04C95DAB217953AF00EDE627 /* UIZoomableImageView.swift */,
+			);
+			path = "Custom view";
 			sourceTree = "<group>";
 		};
 		32406DD9CBF28BB8084B14CE /* Pods */ = {
@@ -356,6 +367,7 @@
 				047E32602177BDC6001FB487 /* Api.swift in Sources */,
 				04BF5A922177E4A9003C13DD /* PresenterProtocol.swift in Sources */,
 				04BF5AA72177EB9E003C13DD /* PictureTableViewCell.swift in Sources */,
+				04C95DAC217953AF00EDE627 /* UIZoomableImageView.swift in Sources */,
 				04BF5AA32177E5E2003C13DD /* PictureDetailsPresenter.swift in Sources */,
 				04BF5AA12177E5D8003C13DD /* PictureDetailsViewController.swift in Sources */,
 				047E325D2177B3C6001FB487 /* Photo.swift in Sources */,

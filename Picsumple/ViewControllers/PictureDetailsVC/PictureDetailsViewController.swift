@@ -12,7 +12,7 @@ import SnapKit
 protocol PictureDetailsView: ViewProtocol {
     var footerView: UIView? { get set }
     var authorLabel: UILabel? { get set }
-    var imageView: UIImageView? { get set }
+    var imageView: UIZoomableImageView? { get set }
     var backgroundView: UIView? { get set }
     var scrollView: UIScrollView? { get set }
     
@@ -27,7 +27,7 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
     lazy var presenter: P = .init(self)
     weak var footerView: UIView?
     weak var authorLabel: UILabel?
-    weak var imageView: UIImageView?
+    weak var imageView: UIZoomableImageView?
     weak var backgroundView: UIView?
     weak var scrollView: UIScrollView?
     
@@ -87,11 +87,10 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         let scrollView = UIScrollView()
         self.view.addSubview(scrollView)
         scrollView.isPagingEnabled = true
-//        for recognizer in scrollView.gestureRecognizers ?? [] {
-//            if recognizer is UIPanGestureRecognizer {
-//                scrollView.removeGestureRecognizer(recognizer)
-//            }
-//        }
+//        scrollView.minimumZoomScale = 1.0
+//        scrollView.maximumZoomScale = 5.0
+//        scrollView.alwaysBounceVertical = false
+//        scrollView.alwaysBounceHorizontal = false
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
@@ -99,9 +98,9 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         self.scrollView = scrollView
         self.scrollView?.delegate = presenter
         
-        let imageView = UIImageView()
+        let imageView = UIZoomableImageView()
         self.scrollView?.addSubview(imageView)
-        imageView.contentMode = .scaleAspectFit
+        imageView.delegate = presenter
         imageView.snp.makeConstraints { (make) in
             make.centerY.equalToSuperview()
             make.centerX.equalToSuperview()
@@ -133,9 +132,6 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         // Fill values
         self.presenter.fillValues()
     }
-    
-    
-    // MARK: - User actions
     
 }
 

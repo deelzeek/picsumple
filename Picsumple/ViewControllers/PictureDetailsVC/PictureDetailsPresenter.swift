@@ -18,31 +18,12 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     
     private var initPoint : CGPoint?
     private (set) var currentPosition: Int = 1
-    private (set) var isBarVisible: Bool = true
     private var lastContentOffset: CGPoint?
-    private var addedImageViews = [UIImageView]()
+    private var addedImageViews = [UIZoomableImageView]()
     
     var isOrientationLandscape: Bool {
         return UIDevice.current.orientation.isLandscape
     }
-    
-    lazy var panGestureRecognizer: UIPanGestureRecognizer = {
-        let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHangler(_:)))
-        recognizer.delegate = self
-        return recognizer
-    }()
-    
-    lazy var pinchGestureRecognizer: UIPinchGestureRecognizer = {
-        let recognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinchGestureHandler(_:)))
-        recognizer.delegate = self
-        return recognizer
-    }()
-    
-    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler(_:)))
-        recognizer.delegate = self
-        return recognizer
-    }()
     
     // MARK: - Init
     
@@ -59,9 +40,6 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         self.view.imageView?.kf.setImage(with: photo.originalImageAddress,
                                          options: [.transition(.fade(0.2))])
         
-        // Add recognizers
-        self.configInteraction(for: self.view.imageView)
-        
         if startingNumber > 0 {
             self.addImageView(at: self.currentPosition + 1)
         }
@@ -69,9 +47,8 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     
     /// Create next image and prepare it for usage, before reaching it
     func addImageView(at position: Int) {
-        let imageView = UIImageView()
+        let imageView = UIZoomableImageView()
         self.view.scrollView?.addSubview(imageView)
-        imageView.contentMode = .scaleAspectFit
         
         // Adjust new view's frame center
         // Formula: x = y * (n+(n-1))
@@ -85,6 +62,8 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
             let _ = self.isOrientationLandscape ? make.height.equalToSuperview() : make.width.equalToSuperview()
         }
         
+        imageView.delegate = self
+        
         // Set image to download
         let resource = self.view.photos[self.view.numberInArray + position].originalImageAddress
         imageView.kf.setImage(with: resource,
@@ -96,132 +75,8 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         // Update scrollView frame
         self.view.scrollView?.contentSize = CGSize(width: self.view.view.frame.width * CGFloat(position),
                                                    height: self.view.view.frame.height)
-        
-        // Add recognizers
-        self.configInteraction(for: imageView)
     }
     
-    // MARK: - Interactions
-    
-    private func configInteraction(for imageView: UIImageView?) {
-        imageView?.isUserInteractionEnabled = true
-        imageView?.addGestureRecognizer(panGestureRecognizer)
-        imageView?.addGestureRecognizer(pinchGestureRecognizer)
-        imageView?.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    // MARK: - Pan Gesture regonizer handler
-    
-    @objc private func panGestureHangler(_ sender: UIPanGestureRecognizer) {
-        guard let picture = sender.view else { return }
-        
-        let translation = sender.translation(in: self.view.view)
-        
-        switch sender.state {
-        case .began:
-            panGestureDidStart(point: picture.center)
-        case .changed:
-            panGestureDidChange(point: translation, view: picture)
-        case .ended:
-            panGestureDidEnd(picture)
-        case .cancelled, .failed, .possible:
-            break
-        }
-    }
-    
-    private func panGestureDidStart(point: CGPoint) {
-        self.initPoint = point
-    }
-    
-    private func panGestureDidChange(point: CGPoint, view: UIView) {
-        /// Move item around
-        view.center = CGPoint(x: initPoint!.x + point.x, y: initPoint!.y + point.y)
-        
-        // Get distance change from initial center
-        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view) + 50.0
-        
-        // If over 100, then for every +1 point reduce alpha for background
-        if 100.0...200.0 ~= Double(verticalDistance) {
-            let alphaValue: CGFloat = 1.0 - (verticalDistance.truncatingRemainder(dividingBy: 100.0) / 100.0)
-            self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alphaValue)
-        }
-    }
-    
-    private func panGestureDidEnd(_ view: UIView) {
-        let verticalDistance: CGFloat = getVerticalDistanceFromCenter(for: view)
-        
-        // If alpha has reached 0, and user let it go on that moment -> dismiss
-        if verticalDistance >= 200 {
-            UIView.animate(withDuration: 0.2, animations: {
-                self.view.view.alpha = 0
-            }, completion: { _ in
-                self.view.vc.dismiss(animated: false, completion: nil)
-            })
-            return
-        }
-        
-        /// Animate picture back to init position
-        UIView.animate(withDuration: 0.2, animations: {
-            // Return to original centre
-            view.center = self.initPoint!
-            self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 1)
-            self.view.view.layoutIfNeeded()
-        })
-        
-    }
-    
-    private func getVerticalDistanceFromCenter(for view: UIView) -> CGFloat {
-        let y = self.view.view.center.y
-        let viewY = view.center.y
-        
-        if viewY == 0 {
-            return 0
-        }
-        
-        return (viewY >= y) ? (viewY - y) : (y - viewY)
-    }
-    
-    // MARK: - Pinch Gesture regonizer handler
-    
-    @objc private func pinchGestureHandler(_ gestureRecognizer: UIPinchGestureRecognizer) {
-        guard gestureRecognizer.view != nil else { return }
-        
-        if gestureRecognizer.state == .began || gestureRecognizer.state == .changed {
-            gestureRecognizer.view?.transform = (gestureRecognizer.view?.transform.scaledBy(x: gestureRecognizer.scale, y: gestureRecognizer.scale))!
-            gestureRecognizer.scale = 1.0
-            
-            return
-        }
-        
-        if gestureRecognizer.state == .ended {
-            let transformedSize = gestureRecognizer.view?.layer.frame.size
-            
-            // If transformed size has smaller width/height, then return it to the original width/height
-            let shouldReturnToOriginal: Bool = {
-                let heightIsLess = (transformedSize?.height ?? 0 < self.view.view.bounds.height)
-                let widthIsLess = (transformedSize?.width ?? 0 < self.view.view.bounds.width)
-                return self.isOrientationLandscape ? heightIsLess : widthIsLess
-            }()
-            
-            if shouldReturnToOriginal {
-                UIView.animate(withDuration: 0.2) {
-                    gestureRecognizer.view?.transform = CGAffineTransform.identity
-                }
-            }
-        }
-    }
-    
-    // MARK: - Tap Gesture regonizer handler
-    
-    @objc private func tapGestureHandler(_ sender: UITapGestureRecognizer) {
-        UIView.animate(withDuration: 0.5, animations: {
-            let alphaValue: CGFloat = self.isBarVisible ? 0 : 1
-            self.view.vc.navigationController?.navigationBar.alpha = alphaValue
-            self.view.footerView?.alpha = alphaValue
-        }, completion: { _ in
-            self.isBarVisible = !self.isBarVisible
-        })
-    }
 }
 
 // MARK: - UIGestureRecognizerDelegate method
@@ -229,10 +84,9 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
 extension PictureDetailsPresenter: UIGestureRecognizerDelegate {
     
     func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if #available(iOS 11.0, *) {
-            debugPrint("view: \(gestureRecognizer.view), rec: \(gestureRecognizer.name)")
-        } else {
-            // Fallback on earlier versions
+        if let recognizer = gestureRecognizer as? UIPanGestureRecognizer {
+            let velocity = recognizer.velocity(in: recognizer.view)
+            return abs(velocity.x) > abs(velocity.y)
         }
         
         return true
@@ -242,35 +96,69 @@ extension PictureDetailsPresenter: UIGestureRecognizerDelegate {
         
         if (gestureRecognizer is UIPanGestureRecognizer || gestureRecognizer is UIPinchGestureRecognizer) {
             return true
-        } else if (gestureRecognizer is UISwipeGestureRecognizer) {
-            return false
-        } else if (gestureRecognizer.view === self.view.scrollView) {
-            return false
         } else {
             return false
         }
     }
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        return (gestureRecognizer.view !== self.view.scrollView)
+        let imageView: UIZoomableImageView? = {
+            if currentPosition == 1 {
+                return self.view.imageView
+            } else {
+                if self.addedImageViews.indices.contains(currentPosition) {
+                    return self.addedImageViews[currentPosition]
+                }
+            }
+
+            return nil
+        }()
+
+        guard let view = imageView else { return true }
+
+        if view.frame.contains(touch.location(in: view)) {
+            return false
+        }
+        
+        return true
     }
+    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
+//                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+//        if gestureRecognizer == self.panGesture && otherGestureRecognizer == self.swipeGesture {
+//            return true
+//        }
+//        return false
+//    }
+    
+//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+//        return (gestureRecognizer.view !== self.view.scrollView)
+//    }
     
 }
 
 // MARK: - UIScrollViewDelegate methods
 
 extension PictureDetailsPresenter: UIScrollViewDelegate {
+//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+//        if currentPosition == 1 {
+//            return self.view.imageView
+//        } else {
+//            return self.addedImageViews[currentPosition - 1]
+//        }
+//    }
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //debugPrint("scrollViewDidScroll")
     }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         lastContentOffset = scrollView.contentOffset
-        //debugPrint("scrollViewWillBeginDragging")
+        debugPrint("scrollViewWillBeginDragging")
     }
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        //debugPrint("scrollViewWillBeginDecelerating")
+        debugPrint("scrollViewWillBeginDecelerating")
         guard let last = lastContentOffset else { return }
         
         // did swipe right
@@ -288,5 +176,31 @@ extension PictureDetailsPresenter: UIScrollViewDelegate {
             }
         }
         
+    }
+}
+
+extension PictureDetailsPresenter: UIZoomableImageViewDelegate {
+    var viewWidth: CGFloat? {
+        return self.view.view.bounds.width
+    }
+    
+    var viewHeight: CGFloat? {
+        return self.view.view.bounds.height
+    }
+    
+    func setBackgroundColorWhileMovingVertically(_ alpha: CGFloat) {
+        self.view.backgroundView?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: alpha)
+    }
+    
+    func didReachDismissPosition() {
+        UIView.animate(withDuration: 0.2, animations: {
+            self.view.view.alpha = 0
+        }, completion: { _ in
+            self.view.vc.dismiss(animated: false, completion: nil)
+        })
+    }
+    
+    func didZoomInImageViewChanged(to zoom: Zoom) {
+        self.view.scrollView?.panGestureRecognizer.isEnabled = (zoom == .zoomOut)
     }
 }

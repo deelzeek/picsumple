@@ -21,7 +21,7 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     private var addedImageViews = [UIZoomableImageView]()
     private (set) var currentPosition: Int = 1 {
         didSet {
-            self.currentPositionDidChange()
+            self.updateViewValue()
         }
     }
     
@@ -36,13 +36,14 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         super.init()
     }
     
+    /// Fill default
     func fillValues() {
         guard let startingNumber = self.view.numberInArray else { return }
         let photo = self.view.photos[startingNumber]
         
-        self.view.authorLabel?.text = photo.author
-        self.view.imageView?.kf.setImage(with: photo.originalImageAddress,
-                                         options: [.transition(.fade(0.2))])
+        //self.view.authorLabel?.text = photo.author
+        self.updateViewValue()
+        self.setImage(for: self.view.imageView, url: photo.originalImageAddress)
         
         /// Add one more imageview by default
         if startingNumber > 0 {
@@ -52,6 +53,10 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     
     /// Create next image and prepare it for usage, before reaching it
     func addImageView(at position: Int) {
+        
+        // If there is not internet connection, then prevent adding any imageview
+        if !isInternetAvailable() { return }
+        
         let imageView = UIZoomableImageView()
         self.view.scrollView?.addSubview(imageView)
         
@@ -71,8 +76,7 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         
         // Set image to download
         let resource = self.view.photos[self.view.numberInArray + position].originalImageAddress
-        imageView.kf.setImage(with: resource,
-                              options: [.transition(.fade(0.2))])
+        self.setImage(for: imageView, url: resource)
         
         // Add to array
         self.addedImageViews.append(imageView)
@@ -114,8 +118,22 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
         self.view.scrollView?.setContentOffset(offsetPoint, animated: true)
     }
     
+    private func setImage(for imageView: UIZoomableImageView?, url: URL) {
+        imageView?.kf.setImage(with: url,
+                              options: [.transition(.fade(0.2))],
+                              completionHandler: { (image, error, cacheType, url) in
+                                // Prevent a situation when user got disconnected from net,
+                                // and tapped onto the image. Neither will not be downloaded,
+                                // nor allow user to dismiss the vc (coz of pan gesture to dismiss).
+                                if image == nil && !isInternetAvailable() {
+                                    self.view.vc.errorOccured("Error occured. Please try again.",
+                                                              action: self.view.vc.dismiss(animated: true, completion: nil))
+                                }
+        })
+    }
+    
     /// Update value on the screen according to what is being shown e.g. author name
-    private func currentPositionDidChange() {
+    private func updateViewValue() {
         if !self.view.photos.indices.contains(self.view.numberInArray + currentPosition - 1) {
             return
         }

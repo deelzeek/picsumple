@@ -46,7 +46,7 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
             case .success(_):
                 break
             case .error(let error):
-                break
+                self.view.vc.errorOccured(error)
             case .noConnection:
                 self.view.vc.noConnection()
             }

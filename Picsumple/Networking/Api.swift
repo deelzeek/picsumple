@@ -19,10 +19,21 @@ final class Api: ApiMethods {
     
     // MARK: - Properties
     
-    private var requestSession: RequestSessionParam = {
-        return Alamofire
-            .request($0,
-                     method: $1)
+    private lazy var manager: SessionManager = {
+        let memoryCapacity = 100 * 1024 * 1024; // 100 MB
+        let diskCapacity = 100 * 1024 * 1024; // 100 MB
+        let cache = URLCache(memoryCapacity: memoryCapacity, diskCapacity: diskCapacity, diskPath: "shared_cache")
+        
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
+        configuration.requestCachePolicy = .returnCacheDataElseLoad
+        configuration.urlCache = cache
+        
+        return SessionManager(configuration: configuration)
+    }()
+    
+    private lazy var requestSession: RequestSessionParam = {
+        return self.manager.request($0,
+                                    method: $1)
     }
     
     // MARK: - Init
@@ -39,14 +50,11 @@ final class Api: ApiMethods {
     
     func getListOfPhotos(_ completion: @escaping Result) {
         
-        if !isInternetAvailable() {
-            completion(.noConnection)
-            return
-        }
-        
         requestSession(getConvertedUrl(.listOfPictures),
                        .get)
             .response { (response) in
+                debugPrint(response)
+                
                 guard let data = response.data else {
                     completion(.error(NSError(domain: "Error occured", code: 404, userInfo: nil)))
                     return

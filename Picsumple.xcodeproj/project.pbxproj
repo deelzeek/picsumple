@@ -12,6 +12,8 @@
 		047E324F2177B0A9001FB487 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 047E324D2177B0A9001FB487 /* LaunchScreen.storyboard */; };
 		047E325D2177B3C6001FB487 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E325C2177B3C6001FB487 /* Photo.swift */; };
 		047E32602177BDC6001FB487 /* Api.swift in Sources */ = {isa = PBXBuildFile; fileRef = 047E325F2177BDC6001FB487 /* Api.swift */; };
+		04A70863217BCDC800A3BE4F /* UIViewController+Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A70862217BCDC800A3BE4F /* UIViewController+Error.swift */; };
+		04A70866217BCE0600A3BE4F /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04A70865217BCE0600A3BE4F /* Reachability.swift */; };
 		04BF5A8A2177E357003C13DD /* ListPicturesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A892177E357003C13DD /* ListPicturesPresenter.swift */; };
 		04BF5A8D2177E40B003C13DD /* ListPicturesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A8C2177E40B003C13DD /* ListPicturesViewController.swift */; };
 		04BF5A922177E4A9003C13DD /* PresenterProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5A912177E4A9003C13DD /* PresenterProtocol.swift */; };
@@ -37,6 +39,8 @@
 		047E32502177B0A9001FB487 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		047E325C2177B3C6001FB487 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		047E325F2177BDC6001FB487 /* Api.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Api.swift; sourceTree = "<group>"; };
+		04A70862217BCDC800A3BE4F /* UIViewController+Error.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Error.swift"; sourceTree = "<group>"; };
+		04A70865217BCE0600A3BE4F /* Reachability.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		04BF5A892177E357003C13DD /* ListPicturesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPicturesPresenter.swift; sourceTree = "<group>"; };
 		04BF5A8C2177E40B003C13DD /* ListPicturesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListPicturesViewController.swift; sourceTree = "<group>"; };
 		04BF5A912177E4A9003C13DD /* PresenterProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PresenterProtocol.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 		047E32432177B0A7001FB487 /* Picsumple */ = {
 			isa = PBXGroup;
 			children = (
+				04A70864217BCDFD00A3BE4F /* Utils */,
+				04A70861217BCDAE00A3BE4F /* Extensions */,
 				04C95DAA2179539400EDE627 /* Custom view */,
 				047E32572177B309001FB487 /* Config */,
 				04BF5A8E2177E460003C13DD /* Protocols */,
@@ -152,6 +158,22 @@
 				047E325C2177B3C6001FB487 /* Photo.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		04A70861217BCDAE00A3BE4F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				04A70862217BCDC800A3BE4F /* UIViewController+Error.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		04A70864217BCDFD00A3BE4F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				04A70865217BCE0600A3BE4F /* Reachability.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		04BF5A862177E332003C13DD /* ListPicturesVC */ = {
@@ -372,8 +394,10 @@
 				04BF5AA12177E5D8003C13DD /* PictureDetailsViewController.swift in Sources */,
 				047E325D2177B3C6001FB487 /* Photo.swift in Sources */,
 				047E32452177B0A7001FB487 /* AppDelegate.swift in Sources */,
+				04A70866217BCE0600A3BE4F /* Reachability.swift in Sources */,
 				04BF5AAE2177EE38003C13DD /* Endpoints.swift in Sources */,
 				04BF5A8D2177E40B003C13DD /* ListPicturesViewController.swift in Sources */,
+				04A70863217BCDC800A3BE4F /* UIViewController+Error.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

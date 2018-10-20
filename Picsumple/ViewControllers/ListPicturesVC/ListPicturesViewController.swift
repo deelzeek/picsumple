@@ -32,6 +32,9 @@ final class ListPicturesViewController: UIViewController, MVPViewController {
     private func setupViews() {
         self.title = "Pictures"
         
+        let rightBarItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: presenter, action: #selector(presenter.getPhotos))
+        self.navigationItem.rightBarButtonItem = rightBarItem
+        
         let tableView = UITableView()
         self.view.addSubview(tableView)
         tableView.snp.makeConstraints { (make) in

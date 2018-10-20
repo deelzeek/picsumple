@@ -38,7 +38,7 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
         super.init()
     }
     
-    func getPhotos() {
+    @objc func getPhotos() {
         Api.shared.getListOfPhotos { (result) in
             switch result {
             case .success(let photos as [Photo]):
@@ -48,7 +48,7 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
             case .error(let error):
                 break
             case .noConnection:
-                break
+                self.view.vc.noConnection()
             }
         }
     }

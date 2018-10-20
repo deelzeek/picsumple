@@ -38,6 +38,12 @@ final class Api: ApiMethods {
     // MARK: - Requests
     
     func getListOfPhotos(_ completion: @escaping Result) {
+        
+        if !isInternetAvailable() {
+            completion(.noConnection)
+            return
+        }
+        
         requestSession(getConvertedUrl(.listOfPictures),
                        .get)
             .response { (response) in

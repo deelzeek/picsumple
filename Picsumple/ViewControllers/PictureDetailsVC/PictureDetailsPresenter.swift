@@ -79,86 +79,15 @@ final class PictureDetailsPresenter: NSObject, PresenterProtocol {
     
 }
 
-// MARK: - UIGestureRecognizerDelegate method
-
-extension PictureDetailsPresenter: UIGestureRecognizerDelegate {
-    
-    func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        if let recognizer = gestureRecognizer as? UIPanGestureRecognizer {
-            let velocity = recognizer.velocity(in: recognizer.view)
-            return abs(velocity.x) > abs(velocity.y)
-        }
-        
-        return true
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        
-        if (gestureRecognizer is UIPanGestureRecognizer || gestureRecognizer is UIPinchGestureRecognizer) {
-            return true
-        } else {
-            return false
-        }
-    }
-    
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        let imageView: UIZoomableImageView? = {
-            if currentPosition == 1 {
-                return self.view.imageView
-            } else {
-                if self.addedImageViews.indices.contains(currentPosition) {
-                    return self.addedImageViews[currentPosition]
-                }
-            }
-
-            return nil
-        }()
-
-        guard let view = imageView else { return true }
-
-        if view.frame.contains(touch.location(in: view)) {
-            return false
-        }
-        
-        return true
-    }
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-//                           shouldRequireFailureOf otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-//        if gestureRecognizer == self.panGesture && otherGestureRecognizer == self.swipeGesture {
-//            return true
-//        }
-//        return false
-//    }
-    
-//    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-//        return (gestureRecognizer.view !== self.view.scrollView)
-//    }
-    
-}
-
 // MARK: - UIScrollViewDelegate methods
 
 extension PictureDetailsPresenter: UIScrollViewDelegate {
-//    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-//        if currentPosition == 1 {
-//            return self.view.imageView
-//        } else {
-//            return self.addedImageViews[currentPosition - 1]
-//        }
-//    }
-    
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //debugPrint("scrollViewDidScroll")
-    }
     
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         lastContentOffset = scrollView.contentOffset
-        debugPrint("scrollViewWillBeginDragging")
     }
     
     func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        debugPrint("scrollViewWillBeginDecelerating")
         guard let last = lastContentOffset else { return }
         
         // did swipe right
@@ -198,9 +127,5 @@ extension PictureDetailsPresenter: UIZoomableImageViewDelegate {
         }, completion: { _ in
             self.view.vc.dismiss(animated: false, completion: nil)
         })
-    }
-    
-    func didZoomInImageViewChanged(to zoom: Zoom) {
-        self.view.scrollView?.panGestureRecognizer.isEnabled = (zoom == .zoomOut)
     }
 }

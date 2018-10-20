@@ -18,7 +18,6 @@ protocol UIZoomableImageViewDelegate: class {
     
     func setBackgroundColorWhileMovingVertically(_ alpha: CGFloat)
     func didReachDismissPosition()
-    func didZoomInImageViewChanged(to zoom: Zoom)
 }
 
 class UIZoomableImageView: UIImageView {
@@ -30,13 +29,7 @@ class UIZoomableImageView: UIImageView {
         return UIDevice.current.orientation.isLandscape
     }
     
-    private var currentlyZoomedOut: Bool = false {
-        didSet {
-            // Turn on/off local pan gesture recognizer
-            self.panGestureRecognizer.isEnabled = !currentlyZoomedOut
-            self.delegate?.didZoomInImageViewChanged(to: currentlyZoomedOut ? Zoom.zoomOut : Zoom.zoomIn)
-        }
-    }
+    private var pinchZoomIsProcessing: Bool = false
     
     /// input
     weak var delegate: UIZoomableImageViewDelegate?
@@ -46,19 +39,13 @@ class UIZoomableImageView: UIImageView {
     lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer(target: self, action: #selector(panGestureHangler(_:)))
         //recognizer.delaysTouchesBegan = true
-        //recognizer.delegate = self
+        recognizer.delegate = self
         return recognizer
     }()
     
     lazy var pinchGestureRecognizer: UIPinchGestureRecognizer = {
         let recognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinchGestureHandler(_:)))
-        //recognizer.delegate = self
-        return recognizer
-    }()
-    
-    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
-        let recognizer = UITapGestureRecognizer(target: self, action: #selector(tapGestureHandler(_:)))
-        //recognizer.delegate = self
+        recognizer.delegate = self
         return recognizer
     }()
     
@@ -85,8 +72,6 @@ class UIZoomableImageView: UIImageView {
         self.addGestureRecognizer(panGestureRecognizer)
         self.addGestureRecognizer(pinchGestureRecognizer)
         
-        self.panGestureRecognizer.isEnabled = false
-        //self.addGestureRecognizer(tapGestureRecognizer)
     }
 
     // MARK: - Pan Gesture regonizer handler
@@ -166,59 +151,50 @@ class UIZoomableImageView: UIImageView {
             gestureRecognizer.view?.transform = (gestureRecognizer.view?.transform.scaledBy(x: gestureRecognizer.scale, y: gestureRecognizer.scale))!
             gestureRecognizer.scale = 1.0
             
+            self.pinchZoomIsProcessing = true
             return
         }
         
         if gestureRecognizer.state == .ended {
-            let transformedSize = gestureRecognizer.view?.layer.frame.size
-            
-            // If transformed size has smaller width/height, then return it to the original width/height
-            let shouldReturnToOriginal: Bool = {
-                guard
-                    let height = self.delegate?.viewWidth,
-                    let width = self.delegate?.viewWidth
-                else { return false}
-                
-                let heightIsLess = (transformedSize?.height ?? 0 < height)
-                let widthIsLess = (transformedSize?.width ?? 0 < width)
-                return self.isOrientationLandscape ? heightIsLess : widthIsLess
-            }()
             
             // Update zoom value
-            self.currentlyZoomedOut = shouldReturnToOriginal
+            self.pinchZoomIsProcessing = false
             
-            if shouldReturnToOriginal {
+            //if shouldReturnToOriginal {
                 UIView.animate(withDuration: 0.2) {
                     gestureRecognizer.view?.transform = CGAffineTransform.identity
                 }
-            }
+            //}
         }
-    }
-    
-    // MARK: - Tap Gesture regonizer handler
-    
-    @objc private func tapGestureHandler(_ sender: UITapGestureRecognizer) {
-        debugPrint("tapGestureHandler: not implemented")
     }
 
 }
 
 extension UIZoomableImageView: UIGestureRecognizerDelegate {
     
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        
+        if (gestureRecognizer === self.panGestureRecognizer && otherGestureRecognizer === self.pinchGestureRecognizer) || (gestureRecognizer === self.pinchGestureRecognizer && otherGestureRecognizer === self.panGestureRecognizer) {
+            return true
+        } else {
+            return false
+        }
+    }
+    
     override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
         debugPrint(gestureRecognizer)
         
         if gestureRecognizer === self.panGestureRecognizer {
-            debugPrint("Local pan gesture recognizer")
-//            if let recognizer = gestureRecognizer as? UIPanGestureRecognizer {
-//                let velocity = recognizer.velocity(in: recognizer.view)
-//                return abs(velocity.y) > abs(velocity.x)
-//            }
+            if self.pinchZoomIsProcessing {
+                return true
+            } else {
+                if let recognizer = gestureRecognizer as? UIPanGestureRecognizer {
+                    let velocity = recognizer.velocity(in: recognizer.view)
+                    return abs(velocity.y) > abs(velocity.x)
+                }
+
+            }
         }
-        
-//        if let _ = gestureRecognizer as? UIPanGestureRecognizer {
-//            return !self.panGestureRecognizer.isEnabled
-//        }
 
         return true
     }

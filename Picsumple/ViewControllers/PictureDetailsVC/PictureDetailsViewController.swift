@@ -87,10 +87,6 @@ final class PictureDetailsViewController: UIViewController, MVPViewController {
         let scrollView = UIScrollView()
         self.view.addSubview(scrollView)
         scrollView.isPagingEnabled = true
-//        scrollView.minimumZoomScale = 1.0
-//        scrollView.maximumZoomScale = 5.0
-//        scrollView.alwaysBounceVertical = false
-//        scrollView.alwaysBounceHorizontal = false
         scrollView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }

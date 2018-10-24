@@ -38,9 +38,9 @@ enum Endpoint {
             case .listOfPictures:
                 return "list"
             case .uniquePhoto(let id):
-                return ""
+                return "1000/1000?image=\(id)"
             case .photoThumbnail(let id):
-                return ""
+                return "80/80?image=\(id)"
             }
         }()
         

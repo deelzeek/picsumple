@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DynamicGallery
 
 final class ListPicturesPresenter: NSObject, PresenterProtocol {
     typealias V = ListPicturesView
@@ -14,7 +15,7 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
     // MARK: - Properties
     
     unowned var view: V
-    private (set) var photos = [Photo]() {
+    private (set) var photos = [PhotoViewModel]() {
         didSet {
             guard let tableView = self.view.tableView else { return }
             tableView.reloadData()
@@ -41,7 +42,7 @@ final class ListPicturesPresenter: NSObject, PresenterProtocol {
     @objc func getPhotos() {
         Api.shared.getListOfPhotos { (result) in
             switch result {
-            case .success(let photos as [Photo]):
+            case .success(let photos as [PhotoViewModel]):
                 self.photos = photos
             case .success(_):
                 break
@@ -67,7 +68,7 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "picCell") as! PictureTableViewCell
-        let photo = self.photos[indexPath.row] as PhotoMasterCell
+        let photo = self.photos[indexPath.row]
         cell.setPhoto(photo)
         return cell
     }
@@ -76,7 +77,7 @@ extension ListPicturesPresenter: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         
         let rowNum = indexPath.row
-        let vc = PictureDetailsViewController(photos: self.photos, numberInArray: rowNum)
+        let vc = DynamicGalleryViewController(photos: self.photos, numberInArray: rowNum)
         vc.modalPresentationStyle = .overCurrentContext
         vc.modalTransitionStyle = .coverVertical
         self.view.vc.present(vc, animated: true, completion: nil)

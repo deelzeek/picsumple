@@ -42,7 +42,7 @@ final class Api: ApiMethods {
     
     // MARK: - Convert url
     
-    private func getConvertedUrl(_ endpoint: Endpoint) -> String {
+    func getConvertedUrl(_ endpoint: Endpoint) -> String {
         return endpoint.format(BASE_URL)
     }
     
@@ -64,7 +64,13 @@ final class Api: ApiMethods {
                     let decoder = JSONDecoder()
                     let photos = try decoder.decode([Photo].self, from: data)
                     
-                    completion(.success(photos))
+                    var viewModels = [PhotoViewModel]()
+                    photos.forEach {
+                        let photoModel = PhotoViewModel(with: $0)
+                        viewModels.append(photoModel)
+                    }
+                    
+                    completion(.success(viewModels))
                 } catch let error {
                     completion(.error(error))
                 }

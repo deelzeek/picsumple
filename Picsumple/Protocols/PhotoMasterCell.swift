@@ -7,10 +7,9 @@
 //
 
 import Foundation
+import DynamicGallery
 
-protocol PhotoMasterCell {
-    var id: Int { get set }
-    var author: String { get set }
-    var thumbnailAddress: URL { get}
-    var originalImageAddress: URL { get }
-}
+//protocol PhotoMasterCell: DynamiceGalleryPhoto {
+//    var id: Int { get set }
+//    var thumbnailAddress: URL { get}
+//}

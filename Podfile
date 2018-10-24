@@ -9,5 +9,5 @@ target 'Picsumple' do
   pod 'SnapKit', '~> 4.0.0'
   pod 'Alamofire', '~> 4.7'
   pod 'Kingfisher', '~> 4.0'
-
+  pod 'DynamicGallery'
 end

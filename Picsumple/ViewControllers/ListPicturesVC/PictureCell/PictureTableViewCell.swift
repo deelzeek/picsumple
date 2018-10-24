@@ -12,7 +12,7 @@ import Kingfisher
 class PictureTableViewCell: UITableViewCell {
 
     // MARK: - Properties
-    private var photo: PhotoMasterCell?
+    private var photo: PhotoViewModel?
     @IBOutlet weak var authorName: UILabel!
     @IBOutlet weak var photoView: UIImageView!
     
@@ -27,7 +27,7 @@ class PictureTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func setPhoto(_ photo: PhotoMasterCell) {
+    func setPhoto(_ photo: PhotoViewModel) {
         self.photo = photo
         
         self.authorName.text = photo.author

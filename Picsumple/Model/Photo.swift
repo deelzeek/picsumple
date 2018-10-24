@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Photo: Decodable, PhotoMasterCell {
+struct Photo: Decodable {
     var format: String
     var width: Int
     var height: Int
@@ -17,13 +17,6 @@ struct Photo: Decodable, PhotoMasterCell {
     var author: String
     var authorUrl: String
     var postUrl: String
-    var thumbnailAddress: URL {
-        return URL(string: "https://picsum.photos/80/80?image=\(id)")!
-    }
-    
-    var originalImageAddress: URL {
-        return URL(string: "https://picsum.photos/1000/1000?image=\(id)")!
-    }
     
     enum CodingKeys: String, CodingKey {
         case id

@@ -30,7 +30,7 @@ class PictureTableViewCell: UITableViewCell {
     func setPhoto(_ photo: PhotoViewModel) {
         self.photo = photo
         
-        self.authorName.text = photo.author
+        self.authorName.text = photo.footerLabelText
         self.photoView.kf.setImage(with: photo.thumbnailAddress,
                                    placeholder: nil)
     }

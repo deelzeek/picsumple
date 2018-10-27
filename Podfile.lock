@@ -1,7 +1,6 @@
 PODS:
   - Alamofire (4.7.3)
-  - DynamicGallery (0.1.0):
-    - Alamofire (~> 4.7)
+  - DynamicGallery (0.1.1):
     - Kingfisher (~> 4.0)
     - SnapKit (~> 4.0.0)
   - Kingfisher (4.10.0)
@@ -15,7 +14,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
-  DynamicGallery: 1a6d858843f44744e88fcdf94ef1453059a256d1
+  DynamicGallery: 5782afeef5b3b677504978fab135294b69fda254
   Kingfisher: 43c4b802d8b5256cf1f4379e9cd10b329be6d3e2
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
 

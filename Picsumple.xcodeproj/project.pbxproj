@@ -24,7 +24,6 @@
 		04BF5AAA2177EDC3003C13DD /* RequestResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AA92177EDC3003C13DD /* RequestResult.swift */; };
 		04BF5AAC2177EDE3003C13DD /* ApiMethods.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AAB2177EDE3003C13DD /* ApiMethods.swift */; };
 		04BF5AAE2177EE38003C13DD /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04BF5AAD2177EE38003C13DD /* Endpoints.swift */; };
-		04C95DA92178B33B00EDE627 /* PhotoMasterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04C95DA82178B33B00EDE627 /* PhotoMasterCell.swift */; };
 		04ED58E52180E68C00DEFA2D /* PhotoViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04ED58E42180E68C00DEFA2D /* PhotoViewModel.swift */; };
 		75AD70225EDA0B0C0379C17E /* Pods_Picsumple.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F261EED5B3EF745164563E63 /* Pods_Picsumple.framework */; };
 /* End PBXBuildFile section */
@@ -49,7 +48,6 @@
 		04BF5AA92177EDC3003C13DD /* RequestResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestResult.swift; sourceTree = "<group>"; };
 		04BF5AAB2177EDE3003C13DD /* ApiMethods.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiMethods.swift; sourceTree = "<group>"; };
 		04BF5AAD2177EE38003C13DD /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
-		04C95DA82178B33B00EDE627 /* PhotoMasterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoMasterCell.swift; sourceTree = "<group>"; };
 		04ED58E42180E68C00DEFA2D /* PhotoViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoViewModel.swift; sourceTree = "<group>"; };
 		68ECA160F78B1AB6FE95DB82 /* Pods-Picsumple.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.release.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.release.xcconfig"; sourceTree = "<group>"; };
 		C2721B07C8E864FB21DA149B /* Pods-Picsumple.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Picsumple.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Picsumple/Pods-Picsumple.debug.xcconfig"; sourceTree = "<group>"; };
@@ -185,7 +183,6 @@
 			isa = PBXGroup;
 			children = (
 				04BF5A902177E49C003C13DD /* MVP */,
-				04C95DA82178B33B00EDE627 /* PhotoMasterCell.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -364,7 +361,6 @@
 				04BF5A8A2177E357003C13DD /* ListPicturesPresenter.swift in Sources */,
 				04BF5A942177E4BF003C13DD /* MVPViewController.swift in Sources */,
 				04BF5A962177E4CC003C13DD /* ViewProtocol.swift in Sources */,
-				04C95DA92178B33B00EDE627 /* PhotoMasterCell.swift in Sources */,
 				04ED58E52180E68C00DEFA2D /* PhotoViewModel.swift in Sources */,
 				04BF5AAA2177EDC3003C13DD /* RequestResult.swift in Sources */,
 				047E32602177BDC6001FB487 /* Api.swift in Sources */,
@@ -516,7 +512,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Y7L6J7Z75;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Picsumple/Config/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -538,7 +534,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 4Y7L6J7Z75;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = "$(SRCROOT)/Picsumple/Config/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = (

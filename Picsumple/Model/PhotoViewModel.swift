@@ -19,14 +19,8 @@ struct PhotoViewModel: DynamiceGalleryPhoto {
         return self.photo.id
     }
     
-    var author: String {
-        get {
-            return self.photo.author.capitalized
-        }
-        
-        set {
-            self.photo.author = newValue
-        }
+    var footerLabelText: String {
+        return self.photo.author.capitalized
     }
     
     var thumbnailAddress: URL {
@@ -35,7 +29,7 @@ struct PhotoViewModel: DynamiceGalleryPhoto {
         return URL(string: urlAddress)!
     }
     
-    var originalImageAddress: URL {
+    var imageAddress: URL {
         let id = String(self.photo.id)
         let urlAddress: String = Api.shared.getConvertedUrl(.uniquePhoto(id: id))
         return URL(string: urlAddress)!
